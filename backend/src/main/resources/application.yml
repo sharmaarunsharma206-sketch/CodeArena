@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: codearena-backend
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/codearena}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+# Code Arena Security & Platform Settings
+codearena:
+  jwt:
+    secret: ${JWT_SECRET:codearena_jwt_production_secret_key_2026_secure}
+    expiration-ms: 604800000 # 7 days
+  google:
+    client-id: ${GOOGLE_CLIENT_ID:your-google-client-id.apps.googleusercontent.com}
+  platform:
+    timezone: "Asia/Kolkata"
+    daily-problem-limit: 2
+    docker-sandbox-enabled: true
+    execution-timeout-ms: 2000
+    memory-limit-mb: 128

@@ -1,0 +1,24 @@
+{
+  "users": [],
+  "daily_problem_usage": [],
+  "contests": [
+    {
+      "id": "contest-2026-11-12",
+      "title": "Daily Arena Challenge — 2026-11-12",
+      "code": "DAC-20261112",
+      "description": "Official daily competitive programming contest. Solve 4 algorithmic challenges in 90 minutes. Asia/Kolkata timezone.",
+      "start_time": "2026-11-12T08:07:42.816Z",
+      "end_time": "2026-11-12T08:08:42.816Z",
+      "timezone": "Asia/Kolkata",
+      "status": "COMPLETED",
+      "problem_ids": [
+        "prob-1",
+        "prob-2",
+        "prob-6",
+        "prob-3"
+      ]
+    }
+  ],
+  "contest_participants": [],
+  "submissions": []
+}

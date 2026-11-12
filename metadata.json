@@ -1,0 +1,8 @@
+{
+  "name": "Remix Code Arena",
+  "description": "Premium competitive programming platform featuring modern coding workspaces, live contests, algorithm challenges, and performance leaderboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

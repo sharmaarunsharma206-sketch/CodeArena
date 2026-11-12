@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:16-alpine
+    container_name: codearena-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: codearena
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/main/resources/db/migration/V1__init_schema.sql:/docker-entrypoint-initdb.d/V1__init_schema.sql
+
+  # Redis Cache Service
+  redis:
+    image: redis:7-alpine
+    container_name: codearena-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # Spring Boot Backend Service (Java 21)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: codearena-spring-boot
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codearena
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: ${JWT_SECRET:-codearena_jwt_production_secret_key_2026_secure}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-your-google-client-id.apps.googleusercontent.com}
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # For sandboxed judge container execution
+
+  # Docker Isolated Code Execution Judge Sandbox
+  judge-sandbox:
+    image: alpine:3.20
+    container_name: codearena-judge-sandbox
+    restart: "no"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+
+volumes:
+  postgres_data:
